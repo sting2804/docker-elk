@@ -1,0 +1,98 @@
+SET UP THE REPOSITORY
+Install packages to allow apt to use a repository over HTTPS:
+
+$ sudo apt-get install \
+     apt-transport-https \
+     ca-certificates \
+     curl \
+     gnupg2 \
+     software-properties-common
+
+
+Add Docker’s official GPG key:
+
+$ curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+
+Verify that you now have the key with the fingerprint 9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88, by searching for the last 8 characters of the fingerprint.
+
+$ sudo apt-key fingerprint 0EBFCD88
+
+pub   4096R/0EBFCD88 2017-02-22
+      Key fingerprint = 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+uid                  Docker Release (CE deb) <docker@docker.com>
+sub   4096R/F273FCD8 2017-02-22
+
+
+Use the following command to set up the stable repository. You always need the stable repository, even if you want to install builds from the edge or test repositories as well. To add the edge or test repository, add the word edge or test (or both) after the word stable in the commands below.
+
+Note: The lsb_release -cs sub-command below returns the name of your Debian distribution, such as jessie.
+
+$ sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/debian \
+   $(lsb_release -cs) \
+   stable"
+
+INSTALL DOCKER CE
+
+Update the apt package index.
+
+$ sudo apt-get update
+Install the latest version of Docker CE, or go to the next step to install a specific version:
+
+$ sudo apt-get install docker-ce
+
+The Docker daemon starts automatically.
+
+//--------------------------------------------------------------------------------------
+Manage Docker as a non-root user
+
+To create the docker group and add your user:
+
+Create the docker group.
+
+$ sudo groupadd docker
+Add your user to the docker group.
+
+$ sudo usermod -aG docker $USER
+Log out and log back in so that your group membership is re-evaluated.
+
+Verify that you can run docker commands without sudo.
+
+$ docker run hello-world
+This command downloads a test image and runs it in a container. When the container runs, it prints an informational message and exits.
+
+If you initially ran Docker CLI commands using sudo before adding your user to the docker group, you may see the following error, which indicates that your ~/.docker/ directory was created with incorrect permissions due to the sudo commands.
+//--------
+WARNING: Error loading config file: /home/user/.docker/config.json -
+stat /home/user/.docker/config.json: permission denied
+To fix this problem, either remove the ~/.docker/ directory (it is recreated automatically, but any custom settings are lost), or change its ownership and permissions using the following commands:
+
+$ sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+$ sudo chmod g+rwx "$HOME/.docker" -R
+//--------------------------------------------------------------------------------------
+Configure Docker to start on boot
+
+systemd
+$ sudo systemctl enable docker
+To disable this behavior, use disable instead.
+
+$ sudo systemctl disable docker
+If you need to add an HTTP Proxy, set a different directory or partition for the Docker runtime files, or make other customizations, see customize your systemd Docker daemon options.
+//---------------------------------------------------------------------------------------------
+Install Compose on Linux systems
+
+On Linux, you can download the Docker Compose binary from the Compose repository release page on GitHub. Follow the instructions from the link, which involve running the curl command in your terminal to download the binaries. These step by step instructions are also included below.
+
+Run this command to download the latest version of Docker Compose:
+
+sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+Use the latest Compose release number in the download command.
+
+Apply executable permissions to the binary:
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+Test the installation.
+
+$ docker-compose --version
+docker-compose version 1.22.0, build 1719ceb
