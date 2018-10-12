@@ -79,7 +79,7 @@ If you're using Docker for Windows, ensure the "Shared Drives" feature is enable
 Start the stack using `docker-compose`:
 
 ```console
-$ docker-compose up
+$ docker-compose up -d
 ```
 
 You can also run all services in the background (detached mode) by adding the `-d` flag to the above command.
