@@ -7,13 +7,15 @@ services:
         ELK_VERSION: $ELK_VERSION
     volumes:
       - './elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro'
+      - './elasticsearch/data:/usr/share/elasticsearch/data'
     ports:
       - '9200:9200'
       - '9300:9300'
     environment:
-      ES_JAVA_OPTS: '-Xmx256m -Xms256m'
+      ES_JAVA_OPTS: '-Xmx1000m -Xms1000m'
     networks:
       - elk
+    restart: always
   logstash:
     build:
       context: logstash/
@@ -24,6 +26,7 @@ services:
       - './logstash/pipeline:/usr/share/logstash/pipeline:ro'
     ports:
       - '5000:5000'
+      - '5000:5000/udp'
       - '9600:9600'
     environment:
       LS_JAVA_OPTS: '-Xmx256m -Xms256m'
