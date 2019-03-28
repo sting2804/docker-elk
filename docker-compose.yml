@@ -1,20 +1,18 @@
 version: '2'
 services:
   elasticsearch:
-    build:
-      context: elasticsearch/
-      args:
-        ELK_VERSION: $ELK_VERSION
+    build: elasticsearch/
     volumes:
       - './elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro'
     ports:
       - '9200:9200'
       - '9300:9300'
     environment:
-      ES_JAVA_OPTS: '-Xmx1000m -Xms1000m'
+      ES_JAVA_OPTS: '-Xmx1g -Xms1g'
     networks:
       - elk
-    restart: always
+    restart: on-failure
+    user: 1009
   logstash:
     build:
       context: logstash/
@@ -33,6 +31,7 @@ services:
       - elk
     depends_on:
       - elasticsearch
+    user: 1009
   kibana:
     build:
       context: kibana/
@@ -46,6 +45,7 @@ services:
       - elk
     depends_on:
       - elasticsearch
+    user: 1009
 networks:
   elk:
     driver: bridge
