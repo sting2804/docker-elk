@@ -1,7 +1,6 @@
 version: '2'
 services:
   elasticsearch:
-    user: 1009:999
     build:
       context: elasticsearch/
       args:
@@ -17,7 +16,6 @@ services:
       - elk
     restart: always
   logstash:
-    user: 1009:999
     build:
       context: logstash/
       args:
@@ -36,7 +34,6 @@ services:
     depends_on:
       - elasticsearch
   kibana:
-    user: 1009:999
     build:
       context: kibana/
       args:
