@@ -1,7 +1,10 @@
 version: '2'
 services:
   elasticsearch:
-    build: elasticsearch/
+    build: 
+      context: elasticsearch/
+      args:
+        ELK_VERSION: $ELK_VERSION
     volumes:
       - './elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro'
     ports:
@@ -31,6 +34,7 @@ services:
       - elk
     depends_on:
       - elasticsearch
+    restart: on-failure
     user: '1009'
   kibana:
     build:
@@ -46,8 +50,8 @@ services:
     depends_on:
       - elasticsearch
     user: '1009'
-  kibana1:
-    image: kibana
+    restart: on-failure
+
 networks:
   elk:
     driver: bridge
