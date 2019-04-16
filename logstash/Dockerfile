@@ -7,3 +7,4 @@ FROM docker.elastic.co/logstash/logstash-oss:${ELK_VERSION}
 # Example: RUN logstash-plugin install logstash-filter-json
 RUN logstash-plugin install logstash-input-udp
 RUN logstash-plugin install logstash-codec-plain
+RUN logstash-plugin install logstash-filter-mutate

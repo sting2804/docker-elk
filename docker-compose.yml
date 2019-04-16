@@ -1,7 +1,7 @@
 version: '2'
 services:
   elasticsearch:
-    build: 
+    build:
       context: elasticsearch/
       args:
         ELK_VERSION: $ELK_VERSION
@@ -28,6 +28,7 @@ services:
       - '5000:5000'
       - '5000:5000/udp'
       - '9600:9600'
+      - '5001:5001'
     environment:
       LS_JAVA_OPTS: '-Xmx256m -Xms256m'
     networks:
@@ -51,7 +52,6 @@ services:
       - elasticsearch
     user: '1009'
     restart: on-failure
-
 networks:
   elk:
     driver: bridge
