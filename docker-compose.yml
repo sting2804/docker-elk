@@ -26,7 +26,6 @@ services:
       - './logstash/pipeline:/usr/share/logstash/pipeline:ro'
     ports:
       - '5000:5000'
-      - '5000:5000/udp'
       - '9600:9600'
       - '5001:5001'
     environment:
