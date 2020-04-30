@@ -73,4 +73,3 @@ networks:
     driver: bridge
 volumes:
   elasticsearch:
-    driver: local
