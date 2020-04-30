@@ -72,4 +72,5 @@ networks:
   elk:
     driver: bridge
 volumes:
-  elasticsearch: null
+  elasticsearch:
+    driver: local
